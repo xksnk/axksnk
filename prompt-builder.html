@@ -757,9 +757,7 @@
         /* Custom styles for tag add/remove buttons (plus/cross) in tag library */
         .tag-add, .tag-remove {
             background: #fff !important;
-            border: 2px solid #FFC11D !important;
             color: inherit;
-            box-shadow: none;
             transition: border-color var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
         }
         .tag-add:hover, .tag-add:active,
@@ -876,25 +874,6 @@
         .custom-tag-section {
             margin-bottom: var(--space-lg);
         }
-        .custom-tag-add-btn {
-            width: 44px;
-            height: 44px;
-            padding: 0;
-            background: #FFFFFF;
-            border: 2px solid #E8E8E8;
-            border-radius: 8px;
-            font-size: 20px;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .custom-tag-add-btn:hover {
-            background: #FFF5F5;
-            border-color: #FF4444;
-            transform: scale(1.1);
-        }
     </style>
 </head>
 <body>
@@ -918,15 +897,7 @@
                     <span class="tag-library-title">Tag Library</span>
                 </h2>
                 
-                <!-- Выбор языка -->
-                <div class="lang-selector-inline">
-                    <label for="langSelectInline">Language:</label>
-                    <select id="langSelectInline" class="inline-select" onchange="changeLanguageInline(this.value)">
-                        <option value="en">EN</option>
-                        <option value="ru">RU</option>
-                        <option value="es">ES</option>
-                    </select>
-                </div>
+
                 
                 <!-- Профессия -->
                 <div class="profession-selector">
@@ -937,9 +908,9 @@
 
                 <!-- Новый блок для кастомного тега -->
                 <div class="custom-tag-section">
-                    <div class="custom-tag-input">
-                        <input type="text" id="customTagInput" class="custom-tag-field" placeholder="<custom_tag>" pattern="<[a-zA-Z_][a-zA-Z0-9_]*>">
-                        <button class="custom-tag-add-btn" onclick="addCustomTag()">➕</button>
+                    <div class="custom-tag-input" style="display: flex; gap: 8px; align-items: center;">
+                        <input type="text" id="customTagInput" class="custom-tag-field" placeholder="<custom_tag>" pattern="<[a-zA-Z_][a-zA-Z0-9_]*>" style="flex: 1;">
+                        <button class="add-tag-btn" onclick="addCustomTag()" style="padding: 10px 16px; white-space: nowrap;">+ Add</button>
                     </div>
                 </div>
 
