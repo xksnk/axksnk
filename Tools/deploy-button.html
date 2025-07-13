@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Deploy - Prompt Builder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .deploy-container {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .deploy-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .deploy-description {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .deploy-btn {
+            background: linear-gradient(135deg, #10C691 0%, #0EA5E9 100%);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .deploy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 198, 145, 0.3);
+        }
+
+        .deploy-btn:active {
+            transform: translateY(0);
+        }
+
+        .deploy-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status {
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .status.success {
+            background: #D1FAE5;
+            color: #065F46;
+            border: 1px solid #A7F3D0;
+        }
+
+        .status.error {
+            background: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #FCA5A5;
+        }
+
+        .status.loading {
+            background: #DBEAFE;
+            color: #1E40AF;
+            border: 1px solid #93C5FD;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .sync-btn {
+            background: #6B7280;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .sync-btn:hover {
+            background: #4B5563;
+        }
+
+        .file-info {
+            background: #F3F4F6;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: left;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .file-info h4 {
+            margin-bottom: 8px;
+            color: #111827;
+        }
+
+        .file-path {
+            font-family: 'Monaco', 'Menlo', monospace;
+            background: #E5E7EB;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="deploy-container">
+        <h1 class="deploy-title">🚀 Quick Deploy</h1>
+        <p class="deploy-description">
+            Deploy your prompt-builder.html changes to GitHub with one click
+        </p>
+        
+        <button class="deploy-btn" onclick="deployToGitHub()" id="deployBtn">
+            <span>🚀</span>
+            <span>Deploy to GitHub</span>
+        </button>
+        
+        <button class="sync-btn" onclick="syncFile()" id="syncBtn">
+            📁 Sync File Only
+        </button>
+        
+        <div class="status" id="status"></div>
+        
+        <div class="file-info">
+            <h4>File Paths:</h4>
+            <div><strong>Source:</strong> <span class="file-path">/Users/aleksandrkosenko/xksnk_site_github/axksnk/Tools/prompt-builder.html</span></div>
+            <div><strong>Target:</strong> <span class="file-path">/Users/aleksandrkosenko/xksnk_site_github/xksnk/tools/prompt-builder.html</span></div>
+        </div>
+    </div>
+
+    <script>
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+            status.style.display = 'block';
+        }
+
+        function setLoading(loading) {
+            const deployBtn = document.getElementById('deployBtn');
+            const syncBtn = document.getElementById('syncBtn');
+            
+            if (loading) {
+                deployBtn.disabled = true;
+                syncBtn.disabled = true;
+                deployBtn.innerHTML = '<span class="loading-spinner"></span><span>Deploying...</span>';
+            } else {
+                deployBtn.disabled = false;
+                syncBtn.disabled = false;
+                deployBtn.innerHTML = '<span>🚀</span><span>Deploy to GitHub</span>';
+            }
+        }
+
+        async function runScript(scriptPath, action) {
+            try {
+                setLoading(true);
+                showStatus(`Starting ${action}...`, 'loading');
+                
+                const response = await fetch(`/run-script?script=${scriptPath}&action=${action}`, {
+                    method: 'POST'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.text();
+                showStatus(`${action} completed successfully!`, 'success');
+                
+                // Auto-hide success message after 3 seconds
+                setTimeout(() => {
+                    document.getElementById('status').style.display = 'none';
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showStatus(`Error during ${action}: ${error.message}`, 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        function deployToGitHub() {
+            runScript('deploy.sh', 'deploy');
+        }
+
+        function syncFile() {
+            runScript('deploy.sh', 'sync');
+        }
+
+        // Check if we're running in a web server context
+        if (window.location.protocol === 'file:') {
+            // If running as local file, show instructions
+            showStatus('This tool needs to be served from a web server. Please run: python3 -m http.server 8000 in the Tools directory', 'error');
+            document.getElementById('deployBtn').disabled = true;
+            document.getElementById('syncBtn').disabled = true;
+        }
+    </script>
+</body>
+</html> 
