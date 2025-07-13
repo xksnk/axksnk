@@ -1,0 +1,2275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle"></title>
+    <meta id="metaDescription" name="description" content="">
+    
+    <!-- Open Graph -->
+    <meta id="ogTitle" property="og:title" content="">
+    <meta id="ogDescription" property="og:description" content="">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+    <style>
+        /* Import Design System */
+        :root {
+            /* Colors - WCAG AAA compliant */
+            --primary: #FFC11D;
+            --on-primary: #1F1F1F;
+            --primary-container: #FFC11D;
+            --accent: #F0328E;
+            --on-accent: #FFFFFF;
+            --surface: #FFFFFF;
+            --on-surface: #1F1F1F;
+            --on-surface-variant: #49454E;
+            --surface-variant: #F7F7F7;
+            --outline: #E0E0E0;
+            --success: #10C691;
+            --error: #3D75EE;
+            
+            /* Dark mode colors */
+            --dark-surface: #1E1E1E;
+            --dark-on-surface: #E0E0E0;
+            --dark-surface-variant: #2D2D2D;
+            
+            /* Typography Scale */
+            --display-large: 57px;
+            --display-medium: 45px;
+            --display-small: 36px;
+            --headline-large: 32px;
+            --headline-medium: 28px;
+            --headline-small: 24px;
+            --title-large: 22px;
+            --title-medium: 16px;
+            --body-large: 16px;
+            --body-medium: 14px;
+            --label-large: 14px;
+            
+            /* Spacing */
+            --space-unit: 8px;
+            --space-xs: calc(var(--space-unit) * 0.5);
+            --space-sm: var(--space-unit);
+            --space-md: calc(var(--space-unit) * 2);
+            --space-lg: calc(var(--space-unit) * 3);
+            --space-xl: calc(var(--space-unit) * 4);
+            --space-2xl: calc(var(--space-unit) * 6);
+            --space-3xl: calc(var(--space-unit) * 8);
+            
+            /* Performance-optimized transitions (Google Material Design best practices) */
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-medium: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            
+            /* Tag states */
+            --tag-library-bg: var(--surface);
+            --tag-constructor-bg: var(--primary-container);
+            --tag-library-border: var(--outline);
+            --tag-constructor-border: var(--primary);
+            
+            /* Animation states */
+            --scale-hover: 1.02;
+            --scale-active: 0.98;
+            --translate-hover: translateY(-2px);
+            --translate-active: translateY(0);
+        }
+
+        /* Respect user's motion preferences */
+        @media (prefers-reduced-motion: reduce) {
+            :root {
+                --transition-fast: 0ms;
+                --transition-medium: 0ms;
+                --transition-slow: 0ms;
+            }
+        }
+
+        /* Reset */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Base */
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: var(--body-large);
+            line-height: 1.5;
+            color: var(--on-surface);
+            background-color: var(--surface-variant);
+            min-height: 100vh;
+        }
+
+        /* Container */
+        .app-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: var(--space-xl);
+        }
+
+        /* Header */
+        .app-header {
+            background: var(--primary);
+            color: var(--on-primary);
+            padding: var(--space-2xl) 0;
+            margin: calc(-1 * var(--space-xl)) calc(-1 * var(--space-xl)) var(--space-2xl);
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 var(--space-xl);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--space-lg);
+        }
+
+        .app-title {
+            font-size: var(--headline-large);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--space-sm) var(--space-lg);
+            background: var(--surface);
+            color: var(--on-surface);
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition-fast);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .back-home:hover {
+            background: var(--accent);
+            color: var(--on-accent);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr 400px;
+            gap: var(--space-xl);
+            margin-bottom: var(--space-2xl);
+        }
+
+        @media (max-width: 1200px) {
+            .main-layout {
+                grid-template-columns: 250px 1fr;
+            }
+            .output-panel {
+                display: none;
+            }
+            .mobile-output {
+                display: block !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            .tags-panel {
+                order: -1;
+                margin-bottom: var(--space-xl);
+                width: 100%;
+                max-width: 100%;
+            }
+            .mobile-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 99;
+            }
+
+            @media (max-width: 768px) {
+                .mobile-overlay.show {
+                    display: block;
+                }
+            }
+        }
+
+        /* Panels */
+        .panel {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: var(--space-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .panel-title {
+            font-size: var(--title-large);
+            font-weight: 700;
+            margin-bottom: var(--space-lg);
+            color: var(--on-surface);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        /* Profession Selector */
+        .profession-selector {
+            margin-bottom: var(--space-lg);
+        }
+
+        .profession-select {
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            border: 2px solid var(--outline);
+            border-radius: 8px;
+            font-size: var(--body-medium);
+            font-family: inherit;
+            background: var(--surface);
+            color: var(--on-surface);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .profession-select:hover {
+            border-color: var(--accent);
+        }
+
+        .profession-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(240, 50, 142, 0.1);
+        }
+
+        /* Tags - Modern Performance-Optimized Styles */
+        .tags-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: var(--space-sm);
+            /* Smooth scrolling for better UX */
+            scroll-behavior: smooth;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .tag-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #FFFFFF;
+            border: 1px solid #E8E8E8;
+            border-radius: 8px;
+            padding: 10px 12px;
+            min-height: 44px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .tag-item:hover {
+            background: #FAFAFA;
+            border-color: #D0D0D0;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .tag-name {
+            flex: 1;
+            margin-right: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1F1F1F;
+            line-height: 1.2; /* Уменьшено с 1.3 */
+            padding: 0; /* Убрали отступы */
+        }
+
+        .tag-actions {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .tag-add,
+        .tag-remove {
+            width: 24px;
+            height: 24px;
+            border: none !important;
+            outline: none !important;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+            font-size: 14px;
+            padding: 0;
+            box-shadow: none !important;
+        }
+
+        .tag-add:focus,
+        .tag-remove:focus {
+            outline: none !important;
+        }
+
+        .tag-add:hover, .tag-remove:hover {
+            background: #EDEDED;
+            color: #F0328E;
+        }
+
+        .tag-remove {
+            opacity: 0;
+        }
+
+        .tag-item:hover .tag-remove {
+            opacity: 1;
+        }
+
+        /* Custom Tag Input */
+        .custom-tag-input {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+            margin-top: var(--space-md);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--outline);
+        }
+
+        .custom-tag-field {
+            flex: 1;
+            padding: var(--space-sm) var(--space-md);
+            border: 2px solid var(--outline);
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: var(--body-medium);
+            transition: var(--transition-fast);
+            width: 100%;
+        }
+
+        .custom-tag-field:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(240, 50, 142, 0.1);
+        }
+
+        .add-tag-btn {
+            padding: var(--space-sm) var(--space-md);
+            background: var(--accent);
+            color: var(--on-accent);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            align-self: flex-end;
+            margin-top: var(--space-xs);
+            /* GPU-accelerated animations */
+            transform: translateZ(0);
+            transition: 
+                background-color var(--transition-fast),
+                transform var(--transition-fast),
+                box-shadow var(--transition-fast);
+            will-change: transform;
+        }
+
+        .add-tag-btn:hover {
+            background: var(--accent);
+            transform: var(--translate-hover);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .add-tag-btn:active {
+            transform: var(--translate-active);
+        }
+
+        /* Builder Area - Enhanced Drag & Drop */
+        .builder-area {
+            min-height: 600px;
+            background: var(--surface-variant);
+            border: 2px dashed var(--outline);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            position: relative;
+            /* GPU-accelerated transitions */
+            transform: translateZ(0);
+            transition: 
+                border-color var(--transition-fast),
+                background-color var(--transition-fast),
+                transform var(--transition-fast);
+            will-change: border-color, background-color;
+        }
+
+        .builder-area.drag-over {
+            border-color: var(--accent);
+            background: rgba(240, 50, 142, 0.08);
+            transform: scale(1.01);
+            box-shadow: 0 0 0 4px rgba(240, 50, 142, 0.1);
+        }
+
+        .builder-empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            min-height: 400px;
+            color: var(--on-surface-variant);
+            font-size: var(--title-medium);
+            text-align: center;
+        }
+
+        /* Prompt Blocks - Enhanced Animations */
+        .prompt-block {
+            background: var(--surface);
+            border: 2px solid var(--outline);
+            border-radius: 8px;
+            margin-bottom: var(--space-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            /* GPU-accelerated animations */
+            transform: translateZ(0);
+            transition: 
+                border-color var(--transition-fast),
+                box-shadow var(--transition-fast),
+                transform var(--transition-fast),
+                opacity var(--transition-fast);
+            will-change: transform, opacity;
+            /* Smooth entrance animation */
+            animation: blockEntrance 0.3s ease-out;
+        }
+
+        @keyframes blockEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(-10px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .prompt-block:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .prompt-block.dragging {
+            opacity: 0.6;
+            transform: rotate(1deg) scale(1.02);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .block-header {
+            background: var(--primary-container);
+            padding: var(--space-sm) var(--space-md);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: move;
+        }
+
+        .block-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: var(--on-primary);
+        }
+
+        .block-actions {
+            display: flex;
+            gap: var(--space-xs);
+        }
+
+        .block-action {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            background: transparent;
+            color: var(--on-primary);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-fast);
+        }
+
+        .block-action:hover {
+            background: var(--accent);
+            color: var(--on-accent);
+        }
+
+        .block-content {
+            padding: var(--space-md);
+        }
+
+        .block-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: var(--space-sm);
+            border: 1px solid var(--outline);
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: var(--body-medium);
+            resize: vertical;
+            transition: var(--transition-fast);
+        }
+
+        .block-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(240, 50, 142, 0.1);
+        }
+
+        /* Output Panel */
+        .output-panel {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .output-tabs {
+            display: flex;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-md);
+            border-bottom: 2px solid var(--outline);
+        }
+
+        .output-tab {
+            padding: var(--space-sm) var(--space-md);
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--on-surface-variant);
+            transition: var(--transition-fast);
+        }
+
+        .output-tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .output-content {
+            flex: 1;
+            background: var(--dark-surface);
+            color: var(--dark-on-surface);
+            padding: var(--space-lg);
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: var(--body-medium);
+            line-height: 1.6;
+            overflow: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .output-actions {
+            margin-top: var(--space-md);
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        .output-action {
+            flex: 1;
+            padding: var(--space-sm) var(--space-md);
+            background: var(--accent);
+            color: var(--on-accent);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+        }
+
+        .output-action:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .output-action.secondary {
+            background: var(--surface);
+            color: var(--accent);
+            border: 2px solid var(--accent);
+        }
+
+        .output-action.secondary:hover {
+            background: var(--accent);
+            color: var(--on-accent);
+        }
+
+        /* Mobile Output */
+        .mobile-output {
+            display: none;
+            margin-top: var(--space-xl);
+        }
+
+        /* Notifications - Modern Toast System */
+        .notification {
+            position: fixed;
+            bottom: var(--space-xl);
+            right: var(--space-xl);
+            padding: var(--space-md) var(--space-lg);
+            background: var(--success);
+            color: white;
+            border-radius: 12px;
+            font-weight: 600;
+            box-shadow: var(--shadow-lg);
+            /* GPU-accelerated animations */
+            transform: translateY(100px) scale(0.9);
+            opacity: 0;
+            transition: 
+                transform var(--transition-medium),
+                opacity var(--transition-medium);
+            z-index: 1000;
+            will-change: transform, opacity;
+            /* Modern glass effect */
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .notification.show {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .notification.error {
+            background: var(--error);
+        }
+
+        .notification.success {
+            background: var(--success);
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--surface-variant);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+
+        /* Loading State */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--on-accent);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Tag entrance animation */
+        @keyframes tagEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(-10px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Tag removal animation */
+        @keyframes tagRemoval {
+            from {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-10px) scale(0.9);
+            }
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        /* Custom styles for tag add/remove buttons (plus/cross) in tag library */
+        .tag-add,
+        .tag-remove {
+            width: 24px;
+            height: 24px;
+            border: none !important;
+            outline: none !important;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+            font-size: 14px;
+            padding: 0;
+        }
+
+        /* --- Анимация путешествия тегов между Library и Constructor --- */
+        .move-to-constructor {
+            animation: moveToConstructor 0.3s cubic-bezier(0.4,0,0.2,1) forwards;
+        }
+        @keyframes moveToConstructor {
+            to {
+                opacity: 0;
+                transform: translateX(80px) scale(0.85);
+            }
+        }
+        .move-from-library {
+            animation: moveFromLibrary 0.35s cubic-bezier(0.4,0,0.2,1) backwards;
+        }
+        @keyframes moveFromLibrary {
+            from {
+                opacity: 0;
+                transform: translateX(-80px) scale(0.85);
+            }
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+        .move-to-library {
+            animation: moveToLibrary 0.3s cubic-bezier(0.4,0,0.2,1) forwards;
+        }
+        @keyframes moveToLibrary {
+            to {
+                opacity: 0;
+                transform: translateX(-80px) scale(0.85);
+            }
+        }
+
+        .reset-section {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #E8E8E8;
+        }
+        .reset-button {
+            width: 100%;
+            padding: 10px 16px;
+            background: transparent;
+            border: 1px solid #E8E8E8;
+            border-radius: 8px;
+            color: #666;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .reset-button:hover {
+            background: #FFF5F5;
+            border-color: #FF4444;
+            color: #FF4444;
+        }
+
+        .lang-selector-inline {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .inline-select {
+            padding: 6px 12px;
+            border: 1px solid #E0E0E0;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .profession-custom-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .custom-tag-inline {
+            display: flex;
+            gap: 4px;
+        }
+
+        .custom-tag-field-inline {
+            width: 120px;
+            padding: 8px 12px;
+            border: 1px solid #E0E0E0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .add-tag-btn-inline {
+            padding: 8px 12px;
+            background: #10C691;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .custom-tag-section {
+            margin-bottom: var(--space-lg);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1 class="app-title"></h1>
+                <a href="https://xksnk.com/" class="back-home"></a>
+            </div>
+        </header>
+
+        <main class="main-layout">
+            <!-- Tags Panel -->
+            <aside class="tags-panel panel" id="tagsPanel">
+                <h2 class="panel-title">
+                    <span>🏷️</span>
+                    <span class="tag-library-title">Tag Library</span>
+                </h2>
+                
+
+                
+                <!-- Профессия -->
+                <div class="profession-selector">
+                    <label for="professionSelect" style="display: block; margin-bottom: 8px; font-size: 14px; color: #49454E; font-weight: 500;">Select profession</label>
+                    <select id="professionSelect" class="profession-select">
+                        <!-- Options populated by JS -->
+                    </select>
+                </div>
+
+                <!-- Новый блок для кастомного тега -->
+                <div class="custom-tag-section">
+                    <div class="custom-tag-input" style="display: flex; gap: 8px; align-items: center;">
+                        <input type="text" id="customTagInput" class="custom-tag-field" placeholder="<custom_tag>" pattern="<[a-zA-Z_][a-zA-Z0-9_]*>" style="flex: 1; max-width: 200px;">
+                        <button class="add-tag-btn" onclick="addCustomTag()" style="padding: 8px 16px; white-space: nowrap; font-size: 16px; min-width: 60px;">+ Add</button>
+                    </div>
+                </div>
+
+                <div class="tags-container" id="tagsContainer">
+                    <!-- Tags will be populated here -->
+                </div>
+
+                <div class="reset-section">
+                    <button class="reset-button" onclick="resetToDefaults()">
+                        <span>🔄</span>
+                        <span class="reset-text">Reset to defaults</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Builder Panel -->
+            <section class="builder-panel panel">
+                <h2 class="panel-title">
+                    <span>🧩</span>
+                    <span class="prompt-constructor-title"></span>
+                </h2>
+                
+                <div class="builder-area" id="builderArea">
+                    <div class="builder-empty" id="builderEmpty"></div>
+                    <div id="promptBlocks" style="display: none;">
+                        <!-- Prompt blocks will be added here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Output Panel (only one, always visible) -->
+            <aside class="output-panel panel">
+                <h2 class="panel-title">
+                    <span>📤</span>
+                    <span class="output-title"></span>
+                </h2>
+                
+                <div class="output-tabs">
+                    <button class="output-tab formatted" onclick="switchTab('formatted')"></button>
+                    <button class="output-tab raw" onclick="switchTab('raw')"></button>
+                </div>
+                
+                <div class="output-content" id="outputContent">
+                    <!-- Output will be displayed here -->
+                    Your prompt will appear here...
+                </div>
+                
+                <div class="output-actions">
+                    <button class="output-action" onclick="copyToClipboard()">
+                        <span>📋</span>
+                        <span class="copy-btn"></span>
+                    </button>
+                    <button class="output-action secondary" onclick="downloadXML()">
+                        <span>💾</span>
+                        <span class="download-btn"></span>
+                    </button>
+                    <button class="output-action secondary" onclick="uploadXML()">
+                        <span>📤</span>
+                        <span class="upload-btn">Upload XML</span>
+                    </button>
+                </div>
+            </aside>
+        </main>
+
+        <!-- Notification -->
+        <div class="notification" id="notification"></div>
+        <input type="file" id="xmlFileInput" accept=".xml" style="display: none;" onchange="handleFileUpload(event)">
+    </div>
+
+    <script>
+        // === Мультиязычные переводы ===
+        const translations = {
+            en: {
+                ui: {
+                    appTitle: 'AI Prompt Builder',
+                    backHome: '← Back to Home',
+                    tagLibrary: 'Tag Library',
+                    selectProfession: 'Select profession',
+                    add: '+ Add',
+                    remove: 'Remove',
+                    promptConstructor: 'Prompt Constructor',
+                    dragHere: 'Drag tags here to start building your prompt',
+                    output: 'Output',
+                    formatted: 'Formatted',
+                    raw: 'Raw XML',
+                    copy: 'Copy',
+                    download: 'Download',
+                    upload: 'Upload XML',
+                    copied: 'Copied to clipboard!',
+                    downloaded: 'Downloaded successfully!',
+                    enterTagName: 'Enter tag name',
+                    invalidTag: 'Invalid tag name',
+                    tagExists: 'Tag already exists',
+                    tagAdded: 'Tag added successfully',
+                    tagRemoved: 'Tag removed',
+                    tagAddedToConstructor: 'Tag added to constructor',
+                    tagReturnedToLibrary: 'Tag returned to library',
+                    customTag: 'Custom tag',
+                    yourPrompt: 'Your prompt will appear here...',
+                    metaDescription: 'Professional XML prompt builder for AI models. Create structured prompts with drag & drop interface.',
+                    language: 'Language',
+                    resetConfirm: 'Are you sure you want to reset all settings? This will remove all blocks, custom tags, and restore language and profession.',
+                    resetToDefaults: 'Reset to defaults',
+                    confirmReset: 'Are you sure you want to reset everything to default settings?',
+                    resetSuccess: 'Reset to defaults completed!'
+                },
+                professions: {
+                    universal: '🌐 Universal Tags',
+                    devops: '🛠 DevOps/SysAdmin',
+                    travel: '✈️ Travel Assistant',
+                    data: '📊 Data Analyst',
+                    content: '✍️ Content Creator',
+                    developer: '💻 Developer',
+                    designer: '🎨 Designer',
+                    teacher: '📚 Teacher/Educator',
+                    business: '💼 Business Analyst'
+                },
+                tags: {
+                    universal: {
+                        system: 'System prompt / AI role',
+                        user: 'User query',
+                        assistant: 'Assistant response',
+                        context: 'Background context',
+                        instructions: 'Detailed instructions',
+                        examples: 'Example inputs/outputs',
+                        constraints: 'Limitations and rules',
+                        output_format: 'Expected output format',
+                        task: 'Task description',
+                        persona: 'AI personality/character'
+                    },
+                    devops: {
+                        environment: 'System environment',
+                        infrastructure: 'Infrastructure details',
+                        tech_stack: 'Technology stack',
+                        error_log: 'Error logs',
+                        config: 'Configuration files',
+                        requirements: 'System requirements',
+                        security_context: 'Security considerations',
+                        deployment: 'Deployment info',
+                        monitoring: 'Monitoring setup',
+                        automation: 'Automation scripts'
+                    },
+                    travel: {
+                        destination: 'Travel destination',
+                        travel_dates: 'Travel dates',
+                        preferences: 'Travel preferences',
+                        budget: 'Budget constraints',
+                        restrictions: 'Travel restrictions',
+                        itinerary: 'Travel itinerary',
+                        local_info: 'Local information',
+                        accommodation: 'Hotel/lodging info',
+                        activities: 'Activities and attractions',
+                        transportation: 'Transport options'
+                    },
+                    data: {
+                        dataset: 'Dataset description',
+                        metrics: 'Key metrics',
+                        analysis_goal: 'Analysis objectives',
+                        visualization: 'Visualization requirements',
+                        insights: 'Expected insights',
+                        methodology: 'Analysis methodology',
+                        tools: 'Analysis tools',
+                        data_source: 'Data sources',
+                        filters: 'Data filters',
+                        output_format: 'Report format'
+                    },
+                    content: {
+                        topic: 'Content topic',
+                        audience: 'Target audience',
+                        tone: 'Writing tone/style',
+                        keywords: 'SEO keywords',
+                        length: 'Content length',
+                        cta: 'Call to action',
+                        format: 'Content format',
+                        references: 'Reference materials',
+                        brand_voice: 'Brand voice guidelines',
+                        goals: 'Content goals'
+                    },
+                    developer: {
+                        language: 'Programming language',
+                        framework: 'Framework/library',
+                        requirements: 'Feature requirements',
+                        code_style: 'Coding standards',
+                        dependencies: 'Project dependencies',
+                        architecture: 'System architecture',
+                        api_spec: 'API specification',
+                        test_cases: 'Test scenarios',
+                        performance: 'Performance requirements',
+                        documentation: 'Documentation needs'
+                    },
+                    designer: {
+                        design_goals: 'Design objectives',
+                        brand_guidelines: 'Brand guidelines',
+                        color_palette: 'Color scheme',
+                        typography: 'Font choices',
+                        user_flow: 'User journey',
+                        wireframes: 'Layout structure',
+                        inspiration: 'Design references',
+                        constraints: 'Design limitations',
+                        accessibility: 'A11y requirements',
+                        deliverables: 'Expected outputs'
+                    },
+                    teacher: {
+                        learning_objectives: 'Learning goals',
+                        student_level: 'Student proficiency',
+                        curriculum: 'Course curriculum',
+                        lesson_plan: 'Lesson structure',
+                        assessment: 'Evaluation methods',
+                        resources: 'Teaching materials',
+                        activities: 'Learning activities',
+                        duration: 'Time allocation',
+                        prerequisites: 'Prior knowledge',
+                        outcomes: 'Expected outcomes'
+                    },
+                    business: {
+                        business_context: 'Business background',
+                        objectives: 'Business objectives',
+                        stakeholders: 'Key stakeholders',
+                        kpis: 'Performance indicators',
+                        market_analysis: 'Market research',
+                        competition: 'Competitive landscape',
+                        strategy: 'Strategic approach',
+                        risks: 'Risk assessment',
+                        timeline: 'Project timeline',
+                        budget: 'Budget constraints'
+                    }
+                }
+            },
+            ru: {
+                ui: {
+                    appTitle: 'Конструктор AI-промптов',
+                    backHome: '← На главную',
+                    tagLibrary: 'Библиотека тегов',
+                    selectProfession: 'Выберите профессию',
+                    add: '+ Добавить',
+                    remove: 'Удалить',
+                    promptConstructor: 'Конструктор промпта',
+                    dragHere: 'Перетащите теги сюда для создания промпта',
+                    output: 'Результат',
+                    formatted: 'Форматировано',
+                    raw: 'Raw XML',
+                    copy: 'Копировать',
+                    download: 'Скачать',
+                    upload: 'Загрузить XML',
+                    copied: 'Скопировано в буфер!',
+                    downloaded: 'Успешно скачано!',
+                    enterTagName: 'Введите имя тега',
+                    invalidTag: 'Некорректное имя тега',
+                    tagExists: 'Тег уже существует',
+                    tagAdded: 'Тег успешно добавлен',
+                    tagRemoved: 'Тег удалён',
+                    tagAddedToConstructor: 'Тег добавлен в конструктор',
+                    tagReturnedToLibrary: 'Тег возвращен в библиотеку',
+                    customTag: 'Пользовательский тег',
+                    yourPrompt: 'Ваш промпт появится здесь...',
+                    metaDescription: 'Профессиональный конструктор XML-промптов для моделей AI. Создавайте структурированные промпты с интерфейсом перетаскивания и сброса.',
+                    language: 'Язык',
+                    resetConfirm: 'Вы уверены, что хотите сбросить все настройки? Это удалит все блоки, пользовательские теги и вернет язык и профессию к дефолтным.',
+                    resetToDefaults: 'Сбросить настройки',
+                    confirmReset: 'Вы уверены, что хотите сбросить все настройки?',
+                    resetSuccess: 'Настройки сброшены!'
+                },
+                professions: {
+                    universal: '🌐 Универсальные теги',
+                    devops: '🛠 DevOps/Сисадмин',
+                    travel: '✈️ Помощник путешествий',
+                    data: '📊 Аналитик данных',
+                    content: '✍️ Копирайтер',
+                    developer: '💻 Разработчик',
+                    designer: '🎨 Дизайнер',
+                    teacher: '📚 Преподаватель',
+                    business: '💼 Бизнес-аналитик'
+                },
+                tags: {
+                    universal: {
+                        system: 'Системный промпт / Роль AI',
+                        user: 'Запрос пользователя',
+                        assistant: 'Ответ ассистента',
+                        context: 'Контекст',
+                        instructions: 'Подробные инструкции',
+                        examples: 'Примеры ввода/вывода',
+                        constraints: 'Ограничения и правила',
+                        output_format: 'Ожидаемый формат вывода',
+                        task: 'Описание задачи',
+                        persona: 'Персонаж AI'
+                    },
+                    devops: {
+                        environment: 'Окружение системы',
+                        infrastructure: 'Детали инфраструктуры',
+                        tech_stack: 'Технологический стек',
+                        error_log: 'Логи ошибок',
+                        config: 'Конфигурационные файлы',
+                        requirements: 'Системные требования',
+                        security_context: 'Безопасность',
+                        deployment: 'Информация о деплое',
+                        monitoring: 'Мониторинг',
+                        automation: 'Скрипты автоматизации'
+                    },
+                    travel: {
+                        destination: 'Пункт назначения',
+                        travel_dates: 'Даты поездки',
+                        preferences: 'Предпочтения',
+                        budget: 'Бюджет',
+                        restrictions: 'Ограничения',
+                        itinerary: 'Маршрут',
+                        local_info: 'Местная информация',
+                        accommodation: 'Проживание',
+                        activities: 'Активности и достопримечательности',
+                        transportation: 'Транспорт'
+                    },
+                    data: {
+                        dataset: 'Описание датасета',
+                        metrics: 'Ключевые метрики',
+                        analysis_goal: 'Цели анализа',
+                        visualization: 'Требования к визуализации',
+                        insights: 'Ожидаемые инсайты',
+                        methodology: 'Методология анализа',
+                        tools: 'Инструменты анализа',
+                        data_source: 'Fuentes de datos',
+                        filters: 'Filtros de datos',
+                        output_format: 'Formato del informe'
+                    },
+                    content: {
+                        topic: 'Тема контента',
+                        audience: 'Целевая аудитория',
+                        tone: 'Тональность',
+                        keywords: 'SEO-ключи',
+                        length: 'Длина текста',
+                        cta: 'Призыв к действию',
+                        format: 'Формат контента',
+                        references: 'Справочные материалы',
+                        brand_voice: 'Гайдлайн бренда',
+                        goals: 'Цели контента'
+                    },
+                    developer: {
+                        language: 'Язык программирования',
+                        framework: 'Фреймворк/библиотека',
+                        requirements: 'Требования к функционалу',
+                        code_style: 'Стандарты кода',
+                        dependencies: 'Зависимости проекта',
+                        architecture: 'Архитектура системы',
+                        api_spec: 'API-спецификация',
+                        test_cases: 'Тестовые сценарии',
+                        performance: 'Requisitos de rendimiento',
+                        documentation: 'Documentación'
+                    },
+                    designer: {
+                        design_goals: 'Цели дизайна',
+                        brand_guidelines: 'Гайдлайн бренда',
+                        color_palette: 'Цветовая палитра',
+                        typography: 'Типографика',
+                        user_flow: 'Recorrido del usuario',
+                        wireframes: 'Структура макета',
+                        inspiration: 'Референсы',
+                        constraints: 'Ограничения дизайна',
+                        accessibility: 'Требования по доступности',
+                        deliverables: 'Resultados esperados'
+                    },
+                    teacher: {
+                        learning_objectives: 'Учебные цели',
+                        student_level: 'Уровень студентов',
+                        curriculum: 'Учебная программа',
+                        lesson_plan: 'План урока',
+                        assessment: 'Методы оценки',
+                        resources: 'Учебные материалы',
+                        activities: 'Учебные активности',
+                        duration: 'Время',
+                        prerequisites: 'Предварительные знания',
+                        outcomes: 'Ожидаемые результаты'
+                    },
+                    business: {
+                        business_context: 'Бизнес-контекст',
+                        objectives: 'Бизнес-цели',
+                        stakeholders: 'Стейкхолдеры',
+                        kpis: 'KPI',
+                        market_analysis: 'Анализ рынка',
+                        competition: 'Конкуренты',
+                        strategy: 'Стратегия',
+                        risks: 'Оценка рисков',
+                        timeline: 'Таймлайн',
+                        budget: 'Restricciones de presupuesto'
+                    }
+                }
+            },
+            es: {
+                ui: {
+                    appTitle: 'Constructor de Prompts AI',
+                    backHome: '← Volver al inicio',
+                    tagLibrary: 'Biblioteca de etiquetas',
+                    selectProfession: 'Selecciona profesión',
+                    add: '+ Añadir',
+                    remove: 'Eliminar',
+                    promptConstructor: 'Constructor de prompts',
+                    dragHere: 'Arrastra etiquetas aquí para crear tu prompt',
+                    output: 'Salida',
+                    formatted: 'Formateado',
+                    raw: 'Raw XML',
+                    copy: 'Copiar',
+                    download: 'Descargar',
+                    upload: 'Cargar XML',
+                    copied: '¡Copiado al portapapeles!',
+                    downloaded: '¡Descargado con éxito!',
+                    enterTagName: 'Introduce el nombre de la etiqueta',
+                    invalidTag: 'Nombre de etiqueta no válido',
+                    tagExists: 'La etiqueta ya existe',
+                    tagAdded: 'Etiqueta añadida con éxito',
+                    tagRemoved: 'Etiqueta eliminada',
+                    tagAddedToConstructor: 'Etiqueta añadida al constructor',
+                    tagReturnedToLibrary: 'Etiqueta devuelta a la biblioteca',
+                    customTag: 'Etiqueta personalizada',
+                    yourPrompt: 'Tu prompt aparecerá aquí...',
+                    metaDescription: 'Constructor de prompts para modelos de IA. Crea prompts estructurados con interfaz de arrastrar y soltar.',
+                    language: 'Idioma',
+                    resetConfirm: '¿Estás seguro de que quieres restablecer todas las configuraciones? Esto eliminará todos los bloques, etiquetas personalizadas y restaurará el idioma y la profesión.',
+                    resetToDefaults: 'Restablecer valores',
+                    confirmReset: '¿Estás seguro de que quieres restablecer todo?',
+                    resetSuccess: '¡Restablecido con éxito!'
+                },
+                professions: {
+                    universal: '🌐 Etiquetas universales',
+                    devops: '🛠 DevOps/SysAdmin',
+                    travel: '✈️ Asistente de viajes',
+                    data: '📊 Analista de datos',
+                    content: '✍️ Creador de contenido',
+                    developer: '💻 Desarrollador',
+                    designer: '🎨 Diseñador',
+                    teacher: '📚 Profesor',
+                    business: '💼 Analista de negocios'
+                },
+                tags: {
+                    universal: {
+                        system: 'Prompt del sistema / Rol de IA',
+                        user: 'Consulta del usuario',
+                        assistant: 'Respuesta del asistente',
+                        context: 'Contexto',
+                        instructions: 'Instrucciones detalladas',
+                        examples: 'Ejemplos de entrada/salida',
+                        constraints: 'Limitaciones y reglas',
+                        output_format: 'Formato de salida esperado',
+                        task: 'Descripción de la tarea',
+                        persona: 'Personalidad de la IA'
+                    },
+                    devops: {
+                        environment: 'Entorno del sistema',
+                        infrastructure: 'Detalles de infraestructura',
+                        tech_stack: 'Stack tecnológico',
+                        error_log: 'Registros de errores',
+                        config: 'Archivos de configuración',
+                        requirements: 'Requisitos del sistema',
+                        security_context: 'Consideraciones de seguridad',
+                        deployment: 'Información de despliegue',
+                        monitoring: 'Configuración de monitoreo',
+                        automation: 'Scripts de automatización'
+                    },
+                    travel: {
+                        destination: 'Destino',
+                        travel_dates: 'Fechas de viaje',
+                        preferences: 'Preferencias de viaje',
+                        budget: 'Restricciones de presupuesto',
+                        restrictions: 'Restricciones de viaje',
+                        itinerary: 'Itinerario',
+                        local_info: 'Información local',
+                        accommodation: 'Alojamiento',
+                        activities: 'Actividades y atracciones',
+                        transportation: 'Opciones de transporte'
+                    },
+                    data: {
+                        dataset: 'Descripción del conjunto de datos',
+                        metrics: 'Métricas clave',
+                        analysis_goal: 'Objetivos del análisis',
+                        visualization: 'Requisitos de visualización',
+                        insights: 'Perspectivas esperadas',
+                        methodology: 'Metodología de análisis',
+                        tools: 'Herramientas de análisis',
+                        data_source: 'Fuentes de datos',
+                        filters: 'Filtros de datos',
+                        output_format: 'Formato del informe'
+                    },
+                    content: {
+                        topic: 'Tema del contenido',
+                        audience: 'Audiencia objetivo',
+                        tone: 'Tono/estilo de escritura',
+                        keywords: 'Palabras clave SEO',
+                        length: 'Longitud del contenido',
+                        cta: 'Llamada a la acción',
+                        format: 'Formato del contenido',
+                        references: 'Materiales de referencia',
+                        brand_voice: 'Guía de voz de marca',
+                        goals: 'Objetivos del contenido'
+                    },
+                    developer: {
+                        language: 'Lenguaje de programación',
+                        framework: 'Framework/biblioteca',
+                        requirements: 'Requisitos de funcionalidad',
+                        code_style: 'Estándares de código',
+                        dependencies: 'Dependencias del proyecto',
+                        architecture: 'Arquitectura del sistema',
+                        api_spec: 'Especificación de API',
+                        test_cases: 'Escenarios de prueba',
+                        performance: 'Requisitos de rendimiento',
+                        documentation: 'Documentación'
+                    },
+                    designer: {
+                        design_goals: 'Objetivos de diseño',
+                        brand_guidelines: 'Guía de marca',
+                        color_palette: 'Paleta de colores',
+                        typography: 'Tipografía',
+                        user_flow: 'Recorrido del usuario',
+                        wireframes: 'Estructura de diseño',
+                        inspiration: 'Referencias de diseño',
+                        constraints: 'Limitaciones de diseño',
+                        accessibility: 'Requisitos de accesibilidad',
+                        deliverables: 'Resultados esperados'
+                    },
+                    teacher: {
+                        learning_objectives: 'Objetivos de aprendizaje',
+                        student_level: 'Nivel de los estudiantes',
+                        curriculum: 'Plan de estudios',
+                        lesson_plan: 'Estructura de la lección',
+                        assessment: 'Métodos de evaluación',
+                        resources: 'Materiales de enseñanza',
+                        activities: 'Actividades de aprendizaje',
+                        duration: 'Duración',
+                        prerequisites: 'Conocimientos previos',
+                        outcomes: 'Resultados esperados'
+                    },
+                    business: {
+                        business_context: 'Contexto empresarial',
+                        objectives: 'Objetivos empresariales',
+                        stakeholders: 'Partes interesadas',
+                        kpis: 'Indicadores clave',
+                        market_analysis: 'Análisis de mercado',
+                        competition: 'Competencia',
+                        strategy: 'Enfoque estratégico',
+                        risks: 'Evaluación de riesgos',
+                        timeline: 'Cronograma',
+                        budget: 'Restricciones de presupuesto'
+                    }
+                }
+            }
+        };
+
+        // Tag Collections
+        const tagCollections = {
+            universal: [
+                { tag: 'system', description: 'System prompt / AI role' },
+                { tag: 'user', description: 'User query' },
+                { tag: 'assistant', description: 'Assistant response' },
+                { tag: 'context', description: 'Background context' },
+                { tag: 'instructions', description: 'Detailed instructions' },
+                { tag: 'examples', description: 'Example inputs/outputs' },
+                { tag: 'constraints', description: 'Limitations and rules' },
+                { tag: 'output_format', description: 'Expected output format' },
+                { tag: 'task', description: 'Task description' },
+                { tag: 'persona', description: 'AI personality/character' }
+            ],
+            devops: [
+                { tag: 'environment', description: 'System environment' },
+                { tag: 'infrastructure', description: 'Infrastructure details' },
+                { tag: 'tech_stack', description: 'Technology stack' },
+                { tag: 'error_log', description: 'Error logs' },
+                { tag: 'config', description: 'Configuration files' },
+                { tag: 'requirements', description: 'System requirements' },
+                { tag: 'security_context', description: 'Security considerations' },
+                { tag: 'deployment', description: 'Deployment info' },
+                { tag: 'monitoring', description: 'Monitoring setup' },
+                { tag: 'automation', description: 'Automation scripts' }
+            ],
+            travel: [
+                { tag: 'destination', description: 'Travel destination' },
+                { tag: 'travel_dates', description: 'Travel dates' },
+                { tag: 'preferences', description: 'Travel preferences' },
+                { tag: 'budget', description: 'Budget constraints' },
+                { tag: 'restrictions', description: 'Travel restrictions' },
+                { tag: 'itinerary', description: 'Travel itinerary' },
+                { tag: 'local_info', description: 'Local information' },
+                { tag: 'accommodation', description: 'Hotel/lodging info' },
+                { tag: 'activities', description: 'Activities and attractions' },
+                { tag: 'transportation', description: 'Transport options' }
+            ],
+            data: [
+                { tag: 'dataset', description: 'Dataset description' },
+                { tag: 'metrics', description: 'Key metrics' },
+                { tag: 'analysis_goal', description: 'Analysis objectives' },
+                { tag: 'visualization', description: 'Visualization requirements' },
+                { tag: 'insights', description: 'Expected insights' },
+                { tag: 'methodology', description: 'Analysis methodology' },
+                { tag: 'tools', description: 'Analysis tools' },
+                { tag: 'data_source', description: 'Data sources' },
+                { tag: 'filters', description: 'Data filters' },
+                { tag: 'output_format', description: 'Report format' }
+            ],
+            content: [
+                { tag: 'topic', description: 'Content topic' },
+                { tag: 'audience', description: 'Target audience' },
+                { tag: 'tone', description: 'Writing tone/style' },
+                { tag: 'keywords', description: 'SEO keywords' },
+                { tag: 'length', description: 'Content length' },
+                { tag: 'cta', description: 'Call to action' },
+                { tag: 'format', description: 'Content format' },
+                { tag: 'references', description: 'Reference materials' },
+                { tag: 'brand_voice', description: 'Brand voice guidelines' },
+                { tag: 'goals', description: 'Content goals' }
+            ],
+            developer: [
+                { tag: 'language', description: 'Programming language' },
+                { tag: 'framework', description: 'Framework/library' },
+                { tag: 'requirements', description: 'Feature requirements' },
+                { tag: 'code_style', description: 'Coding standards' },
+                { tag: 'dependencies', description: 'Project dependencies' },
+                { tag: 'architecture', description: 'System architecture' },
+                { tag: 'api_spec', description: 'API specification' },
+                { tag: 'test_cases', description: 'Test scenarios' },
+                { tag: 'performance', description: 'Performance requirements' },
+                { tag: 'documentation', description: 'Documentation needs' }
+            ],
+            designer: [
+                { tag: 'design_goals', description: 'Design objectives' },
+                { tag: 'brand_guidelines', description: 'Brand guidelines' },
+                { tag: 'color_palette', description: 'Color scheme' },
+                { tag: 'typography', description: 'Font choices' },
+                { tag: 'user_flow', description: 'User journey' },
+                { tag: 'wireframes', description: 'Layout structure' },
+                { tag: 'inspiration', description: 'Design references' },
+                { tag: 'constraints', description: 'Design limitations' },
+                { tag: 'accessibility', description: 'A11y requirements' },
+                { tag: 'deliverables', description: 'Expected outputs' }
+            ],
+            teacher: [
+                { tag: 'learning_objectives', description: 'Learning goals' },
+                { tag: 'student_level', description: 'Student proficiency' },
+                { tag: 'curriculum', description: 'Course curriculum' },
+                { tag: 'lesson_plan', description: 'Lesson structure' },
+                { tag: 'assessment', description: 'Evaluation methods' },
+                { tag: 'resources', description: 'Teaching materials' },
+                { tag: 'activities', description: 'Learning activities' },
+                { tag: 'duration', description: 'Time allocation' },
+                { tag: 'prerequisites', description: 'Prior knowledge' },
+                { tag: 'outcomes', description: 'Expected outcomes' }
+            ],
+            business: [
+                { tag: 'business_context', description: 'Business background' },
+                { tag: 'objectives', description: 'Business objectives' },
+                { tag: 'stakeholders', description: 'Key stakeholders' },
+                { tag: 'kpis', description: 'Performance indicators' },
+                { tag: 'market_analysis', description: 'Market research' },
+                { tag: 'competition', description: 'Competitive landscape' },
+                { tag: 'strategy', description: 'Strategic approach' },
+                { tag: 'risks', description: 'Risk assessment' },
+                { tag: 'timeline', description: 'Project timeline' },
+                { tag: 'budget', description: 'Budget constraints' }
+            ]
+        };
+
+        // State
+        let currentTags = [];
+        let promptBlocks = [];
+        let currentTab = 'formatted';
+        let draggedElement = null;
+        let currentLang = localStorage.getItem('promptBuilderLang') || 'en';
+        let customTags = [];
+
+        // === UI Translation ===
+        function translateUI() {
+            const t = translations[currentLang];
+            // Title & Meta
+            document.getElementById('pageTitle').textContent = t.ui.appTitle + ' - Aleksandr Kosenko';
+            document.getElementById('metaDescription').setAttribute('content', t.ui.metaDescription || '');
+            document.getElementById('ogTitle').setAttribute('content', t.ui.appTitle + ' - Professional XML Constructor');
+            document.getElementById('ogDescription').setAttribute('content', t.ui.metaDescription || '');
+            // Header
+            document.querySelector('.app-title').textContent = t.ui.appTitle;
+            document.querySelector('.back-home').textContent = t.ui.backHome;
+            // Lang selector - removed from UI
+            // const langSelect = document.getElementById('langSelect');
+            // langSelect.innerHTML = '';
+            // [['en','EN'],['ru','RU'],['es','ES']].forEach(([val, label]) => {
+            //     const opt = document.createElement('option');
+            //     opt.value = val;
+            //     opt.textContent = label;
+            //     langSelect.appendChild(opt);
+            // });
+            // langSelect.value = currentLang;
+            // document.querySelector('label[for="langSelect"]').textContent = t.ui.language || 'Language';
+            // Tag Library
+            document.querySelector('.tag-library-title').textContent = t.ui.tagLibrary;
+            document.querySelector('label[for="professionSelect"]').textContent = t.ui.selectProfession;
+            // Profession select
+            const profSel = document.getElementById('professionSelect');
+            profSel.innerHTML = '';
+            Object.keys(t.professions).forEach((key) => {
+                const opt = document.createElement('option');
+                opt.value = key;
+                opt.textContent = t.professions[key];
+                profSel.appendChild(opt);
+            });
+            // Custom tag input
+            document.getElementById('customTagInput').placeholder = '<custom_tag>';
+            document.querySelector('.add-tag-btn').textContent = t.ui.add;
+            // Prompt Constructor
+            document.querySelector('.prompt-constructor-title').textContent = t.ui.promptConstructor;
+            document.getElementById('builderEmpty').textContent = t.ui.dragHere;
+            // Output panel
+            document.querySelector('.output-title').textContent = t.ui.output;
+            document.querySelector('.output-tab.formatted').textContent = t.ui.formatted;
+            document.querySelector('.output-tab.raw').textContent = t.ui.raw;
+            // Output actions
+            document.querySelector('.copy-btn').textContent = t.ui.copy;
+            document.querySelector('.download-btn').textContent = t.ui.download;
+            // Reset button
+            const resetBtn = document.querySelector('.reset-text');
+            if (resetBtn) resetBtn.textContent = t.ui.resetToDefaults;
+            // Output content (if empty)
+            if (promptBlocks.length === 0) {
+                document.getElementById('outputContent').textContent = t.ui.yourPrompt;
+            }
+            // Перерисовать Tag Library и custom tags
+            loadTags(document.getElementById('professionSelect').value);
+        }
+
+        // === Language Change Handler ===
+        document.addEventListener('DOMContentLoaded', () => {
+            // Language selector removed from UI
+            // document.getElementById('langSelect').addEventListener('change', (e) => {
+            //     currentLang = e.target.value;
+            //     localStorage.setItem('promptBuilderLang', currentLang);
+            //     translateUI();
+            //     renderPromptBlocks(); // To update placeholders
+            //     updateOutput();
+            // });
+            translateUI();
+        });
+
+        // === ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ ДЛЯ ПЕРЕВОДА ТЕГОВ ===
+        function getTranslatedTag(tag, profession, lang) {
+            const t = translations[lang || currentLang];
+            // Ищем перевод в выбранной профессии, затем в universal, иначе возвращаем оригинал
+            return (
+                (t.tags[profession] && t.tags[profession][tag]) ||
+                (t.tags.universal && t.tags.universal[tag]) ||
+                tag
+            );
+        }
+
+        // === Patch: update tag placeholders and block placeholders on language change
+        function createPromptBlock(block) {
+            // Используем язык, на котором был добавлен блок, а не текущий язык интерфейса
+            const t = translations[block.lang || currentLang];
+            // Определяем профессию для поиска перевода (по умолчанию universal)
+            let profession = document.getElementById('professionSelect')?.value || 'universal';
+            // Для кастомных тегов не переводим
+            let displayTag = getTranslatedTag(block.tag, profession, block.lang || currentLang);
+            if (customTags.some(t => t.tag === block.tag && t.lang === (block.lang || currentLang) && t.profession === profession)) {
+                displayTag = block.tag;
+            }
+            const div = document.createElement('div');
+            div.className = 'prompt-block';
+            div.dataset.id = block.id;
+            div.innerHTML = `
+                <div class="block-header">
+                    <span class="block-tag">&lt;${displayTag}&gt;</span>
+                    <div class="block-actions">
+                        <button class="block-action" onclick="moveBlock(${block.id}, -1)" title="Move up">↑</button>
+                        <button class="block-action" onclick="moveBlock(${block.id}, 1)" title="Move down">↓</button>
+                        <button class="block-action" onclick="removeBlock(${block.id})" title="Remove">×</button>
+                    </div>
+                </div>
+                <div class="block-content">
+                    <textarea 
+                        class="block-textarea" 
+                        placeholder="${t.ui.enterTagName.replace('tag name', block.tag)}"
+                        onkeyup="updateBlockContent(${block.id}, this.value)"
+                    >${block.content}</textarea>
+                </div>
+            `;
+            return div;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTags('universal');
+            setupDragAndDrop();
+            loadFromLocalStorage();
+            updateOutput();
+        });
+
+        // Load tags based on profession - Enhanced with exclusivity
+        function loadTags(profession) {
+            const container = document.getElementById('tagsContainer');
+            container.innerHTML = '';
+            
+            // Стандартные теги
+            const tags = tagCollections[profession] || tagCollections.universal;
+            // Кастомные теги только текущего языка и выбранной профессии
+            const custom = customTags.filter(t => t.lang === currentLang && t.profession === profession);
+            
+            // Формируем массив с мультиязычными описаниями
+            const t = translations[currentLang];
+            const tagsWithDesc = tags.map(tagInfo => {
+                let desc = (t.tags[profession] && t.tags[profession][tagInfo.tag]) || (t.tags.universal && t.tags.universal[tagInfo.tag]) || tagInfo.description || '';
+                return { tag: tagInfo.tag, description: desc, isCustom: false };
+            });
+            const customWithDesc = custom.map(tagInfo => ({
+                tag: tagInfo.tag,
+                description: t.ui.customTag,
+                isCustom: true
+            }));
+            
+            // Получаем теги, которые уже в Prompt Constructor
+            const constructorTags = promptBlocks.map(block => block.tag);
+            
+            // Фильтруем теги: показываем только те, которых нет в Constructor
+            const availableTags = [...tagsWithDesc, ...customWithDesc].filter(tagInfo => 
+                !constructorTags.includes(tagInfo.tag)
+            );
+            
+            currentTags = availableTags;
+            
+            // Создаем элементы с анимацией
+            availableTags.forEach((tagInfo, index) => {
+                const tagElement = createTagElement(tagInfo);
+                // Добавляем задержку для каскадной анимации
+                tagElement.style.animationDelay = `${index * 50}ms`;
+                container.appendChild(tagElement);
+            });
+        }
+
+        // Create tag element - Enhanced with modern interactions
+        function createTagElement(tagInfo) {
+            const div = document.createElement('div');
+            div.className = 'tag-item';
+            div.draggable = true;
+            div.dataset.tag = tagInfo.tag;
+            
+            // Определяем переводимый тег (только для стандартных, не кастомных)
+            let displayTag = tagInfo.isCustom
+                ? tagInfo.tag
+                : getTranslatedTag(tagInfo.tag, document.getElementById('professionSelect').value, currentLang);
+            
+            div.innerHTML = `
+                <span class="tag-name">${displayTag}</span>
+                <div class="tag-actions">
+                    <button class="tag-remove" onclick="removeTag('${tagInfo.tag}')" title="Remove">❌</button>
+                    <button class="tag-add" onclick="animatedAddPromptBlock('${tagInfo.tag}', this)" title="Add">✅</button>
+                </div>
+            `;
+            
+            // Enhanced drag events with visual feedback
+            div.addEventListener('dragstart', handleDragStart);
+            div.addEventListener('dragend', handleDragEnd);
+            
+            // Touch events for mobile with improved UX
+            div.addEventListener('touchstart', handleTouchStart, {passive: false});
+            div.addEventListener('touchmove', handleTouchMove, {passive: false});
+            div.addEventListener('touchend', handleTouchEnd);
+            
+            // Add entrance animation
+            div.style.animation = 'tagEntrance 0.3s ease-out forwards';
+            
+            return div;
+        }
+
+        // Анимированное добавление тега в Prompt Constructor
+        function animatedAddPromptBlock(tagName, btn) {
+            const tagEl = btn.closest('.tag-item');
+            tagEl.classList.add('move-to-constructor');
+            // После анимации (300ms) — добавить в Constructor
+            setTimeout(() => {
+                addPromptBlock(tagName);
+            }, 300);
+        }
+        window.animatedAddPromptBlock = animatedAddPromptBlock;
+
+        // Add custom tag
+        function addCustomTag() {
+            const input = document.getElementById('customTagInput');
+            const value = input.value.trim();
+            const tagName = value.replace(/[<>]/g, '');
+            if (!tagName) {
+                showNotification('Enter tag name', 'error');
+                return;
+            }
+            if (!/^[\p{L}_][\p{L}\p{N}_]*$/u.test(tagName)) {
+                showNotification('Invalid tag name', 'error');
+                return;
+            }
+            // Check if tag already exists in current tags or prompt blocks
+            if (currentTags.some(t => t.tag === tagName) || promptBlocks.some(b => b.tag === tagName)) {
+                showNotification('Tag already exists', 'error');
+                return;
+            }
+            // Add to customTags с языком и профессией
+            const profession = document.getElementById('professionSelect').value;
+            const newTag = { tag: tagName, description: translations[currentLang].ui.customTag, lang: currentLang, profession };
+            customTags.push(newTag);
+            // Сразу добавляем в конструктор
+            addPromptBlock(tagName);
+            // Clear input
+            input.value = '';
+            showNotification('Tag added to constructor', 'success');
+            saveToLocalStorage();
+        }
+
+        // Remove tag from library
+        function removeTag(tagName) {
+            // Если это кастомный тег, удаляем из customTags
+            const profession = document.getElementById('professionSelect').value;
+            customTags = customTags.filter(t => !(t.tag === tagName && t.lang === currentLang && t.profession === profession));
+            // Удаляем из currentTags
+            currentTags = currentTags.filter(t => t.tag !== tagName);
+            const tagElement = document.querySelector(`.tag-item[data-tag="${tagName}"]`);
+            if (tagElement) {
+                tagElement.remove();
+            }
+            showNotification('Tag removed', 'success');
+            saveToLocalStorage();
+        }
+
+        // Drag and Drop Setup
+        function setupDragAndDrop() {
+            const builderArea = document.getElementById('builderArea');
+            
+            builderArea.addEventListener('dragover', handleDragOver);
+            builderArea.addEventListener('drop', handleDrop);
+            builderArea.addEventListener('dragleave', handleDragLeave);
+        }
+
+        // Drag handlers
+        function handleDragStart(e) {
+            draggedElement = e.target;
+            e.target.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'copy';
+            e.dataTransfer.setData('text/plain', e.target.dataset.tag);
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+            document.getElementById('builderArea').classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            if (e.target.id === 'builderArea') {
+                e.target.classList.remove('drag-over');
+            }
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            document.getElementById('builderArea').classList.remove('drag-over');
+            
+            const tagName = e.dataTransfer.getData('text/plain');
+            if (tagName) {
+                addPromptBlock(tagName);
+            }
+        }
+
+        // Touch handlers for mobile
+        let touchItem = null;
+        let touchOffset = { x: 0, y: 0 };
+
+        function handleTouchStart(e) {
+            touchItem = e.target.closest('.tag-item');
+            const touch = e.touches[0];
+            const rect = touchItem.getBoundingClientRect();
+            touchOffset.x = touch.clientX - rect.left;
+            touchOffset.y = touch.clientY - rect.top;
+        }
+
+        function handleTouchMove(e) {
+            if (!touchItem) return;
+            e.preventDefault();
+            
+            const touch = e.touches[0];
+            touchItem.style.position = 'fixed';
+            touchItem.style.left = (touch.clientX - touchOffset.x) + 'px';
+            touchItem.style.top = (touch.clientY - touchOffset.y) + 'px';
+            touchItem.style.zIndex = '1000';
+            touchItem.style.opacity = '0.8';
+        }
+
+        function handleTouchEnd(e) {
+            if (!touchItem) return;
+            
+            const touch = e.changedTouches[0];
+            const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+            
+            if (elementBelow && elementBelow.closest('#builderArea')) {
+                addPromptBlock(touchItem.dataset.tag);
+            }
+            
+            // Reset styles
+            touchItem.style.position = '';
+            touchItem.style.left = '';
+            touchItem.style.top = '';
+            touchItem.style.zIndex = '';
+            touchItem.style.opacity = '';
+            touchItem = null;
+        }
+
+        // Add prompt block - Enhanced with exclusivity
+        function addPromptBlock(tagName) {
+            const block = {
+                id: Date.now(),
+                tag: tagName,
+                content: '',
+                lang: currentLang // Сохраняем язык, на котором добавлен блок
+            };
+            
+            promptBlocks.push(block);
+            
+            // Обновляем Tag Library - убираем добавленный тег
+            const profession = document.getElementById('professionSelect').value;
+            loadTags(profession);
+            
+            renderPromptBlocks();
+            updateOutput();
+            saveToLocalStorage();
+            
+            // Показываем уведомление с анимацией
+            showNotification('tagAddedToConstructor', 'success');
+        }
+
+        // Render prompt blocks
+        function renderPromptBlocks() {
+            const container = document.getElementById('promptBlocks');
+            container.innerHTML = '';
+            
+            promptBlocks.forEach(block => {
+                const blockElement = createPromptBlock(block);
+                // Добавим анимацию появления
+                blockElement.classList.add('move-from-library');
+                setTimeout(() => blockElement.classList.remove('move-from-library'), 350);
+                container.appendChild(blockElement);
+            });
+            
+            // Show/hide empty state
+            if (promptBlocks.length === 0) {
+                document.getElementById('builderEmpty').style.display = 'flex';
+                document.getElementById('promptBlocks').style.display = 'none';
+            } else {
+                document.getElementById('builderEmpty').style.display = 'none';
+                document.getElementById('promptBlocks').style.display = 'block';
+            }
+        }
+
+        // Update block content
+        function updateBlockContent(blockId, content) {
+            const block = promptBlocks.find(b => b.id === blockId);
+            if (block) {
+                block.content = content;
+                updateOutput();
+                saveToLocalStorage();
+            }
+        }
+
+        // Move block
+        function moveBlock(blockId, direction) {
+            const index = promptBlocks.findIndex(b => b.id === blockId);
+            if (index === -1) return;
+            
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= promptBlocks.length) return;
+            
+            // Swap blocks
+            [promptBlocks[index], promptBlocks[newIndex]] = [promptBlocks[newIndex], promptBlocks[index]];
+            
+            renderPromptBlocks();
+            updateOutput();
+            saveToLocalStorage();
+        }
+
+        // Remove block - Enhanced with tag return to library
+        function removeBlock(blockId) {
+            promptBlocks = promptBlocks.filter(b => b.id !== blockId);
+            // Обновляем Tag Library - возвращаем удаленный тег
+            const profession = document.getElementById('professionSelect').value;
+            loadTags(profession);
+            renderPromptBlocks();
+            updateOutput();
+            saveToLocalStorage();
+            showNotification('tagReturnedToLibrary', 'success');
+        }
+        window.removeBlock = removeBlock;
+
+        // Update output
+        function updateOutput() {
+            const outputContent = document.getElementById('outputContent');
+            
+            if (promptBlocks.length === 0) {
+                outputContent.textContent = 'Your prompt will appear here...';
+                return;
+            }
+            
+            let output = '';
+            
+            if (currentTab === 'formatted') {
+                // Formatted view
+                promptBlocks.forEach(block => {
+                    if (block.content.trim()) {
+                        output += `<${block.tag}>\n${block.content.trim()}\n</${block.tag}>\n\n`;
+                    }
+                });
+            } else {
+                // Raw XML view
+                output = '<?xml version="1.0" encoding="UTF-8"?>\n<prompt>\n';
+                promptBlocks.forEach(block => {
+                    if (block.content.trim()) {
+                        const escapedContent = escapeXml(block.content.trim());
+                        output += `  <${block.tag}>${escapedContent}</${block.tag}>\n`;
+                    }
+                });
+                output += '</prompt>';
+            }
+            
+            outputContent.textContent = output.trim();
+        }
+
+        // Escape XML special characters
+        function escapeXml(unsafe) {
+            return unsafe.replace(/[<>&'"]/g, (c) => {
+                switch (c) {
+                    case '<': return '&lt;';
+                    case '>': return '&gt;';
+                    case '&': return '&amp;';
+                    case "'": return '&apos;';
+                    case '"': return '&quot;';
+                }
+            });
+        }
+
+        // Switch output tab
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.output-tab').forEach(t => {
+                t.classList.toggle('active', t.textContent.toLowerCase().includes(tab));
+            });
+            updateOutput();
+        }
+
+        // Copy to clipboard
+        async function copyToClipboard() {
+            const content = document.getElementById('outputContent').textContent;
+            
+            try {
+                await navigator.clipboard.writeText(content);
+                showNotification('Copied to clipboard!', 'success');
+            } catch (err) {
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = content;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showNotification('Copied to clipboard!', 'success');
+            }
+        }
+
+        // Download XML
+        function downloadXML() {
+            const content = document.getElementById('outputContent').textContent;
+            const blob = new Blob([content], { type: 'text/xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `prompt_${new Date().toISOString().split('T')[0]}.xml`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showNotification('Downloaded successfully!', 'success');
+        }
+
+        // Show notification - Enhanced with modern styling
+        function showNotification(message, type = 'success') {
+            const t = translations[currentLang];
+            const notification = document.getElementById('notification');
+            
+            // Use translated message if available
+            if (t.ui[message]) message = t.ui[message];
+            
+            // Clear previous classes and set new ones
+            notification.className = 'notification';
+            notification.classList.add(type);
+            notification.textContent = message;
+            
+            // Trigger animation
+            notification.classList.add('show');
+            
+            // Auto-hide after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Local Storage
+        /**
+         * Сохраняет всё состояние конструктора (блоки, пользовательские теги, выбранную профессию и язык) в localStorage
+         */
+        function saveToLocalStorage() {
+            const data = {
+                promptBlocks,
+                customTags,
+                selectedProfession: document.getElementById('professionSelect').value,
+                selectedLang: currentLang // Новое поле для языка
+            };
+            localStorage.setItem('promptBuilderData', JSON.stringify(data));
+            // Для обратной совместимости также сохраняем язык отдельно
+            localStorage.setItem('promptBuilderLang', currentLang);
+        }
+
+        /**
+         * Загружает состояние конструктора из localStorage, включая язык, профессию, блоки и пользовательские теги
+         */
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('promptBuilderData');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    // Восстановление языка (если есть)
+                    if (data.selectedLang && typeof data.selectedLang === 'string') {
+                        currentLang = data.selectedLang;
+                        localStorage.setItem('promptBuilderLang', currentLang);
+                        // document.getElementById('langSelect').value = currentLang; // Language selector removed
+                    }
+                    // Восстановление блоков
+                    if (Array.isArray(data.promptBlocks)) {
+                        promptBlocks = data.promptBlocks;
+                        renderPromptBlocks();
+                    }
+                    // Восстановление customTags с проверкой структуры
+                    if (Array.isArray(data.customTags)) {
+                        customTags = data.customTags.filter(t => t && typeof t.tag === 'string' && typeof t.lang === 'string' && typeof t.profession === 'string');
+                    }
+                    // Восстановление выбранной профессии
+                    if (data.selectedProfession) {
+                        document.getElementById('professionSelect').value = data.selectedProfession;
+                        loadTags(data.selectedProfession);
+                    }
+                } catch (err) {
+                    console.error('Error loading saved data:', err);
+                }
+            }
+        }
+
+        // Profession selector change
+        document.getElementById('professionSelect').addEventListener('change', (e) => {
+            loadTags(e.target.value);
+            saveToLocalStorage();
+        });
+
+        // Custom tag input enter key
+        document.getElementById('customTagInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addCustomTag();
+            }
+        });
+
+        // Prevent form submission on enter in textareas
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && e.target.tagName === 'TEXTAREA') {
+                e.stopPropagation();
+            }
+        });
+
+        // === Upload XML ===
+        function uploadXML() {
+            document.getElementById('xmlFileInput').click();
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const xmlText = e.target.result;
+                    parseAndLoadXML(xmlText);
+                    showNotification('XML loaded successfully!', 'success');
+                } catch (error) {
+                    showNotification('Error loading XML', 'error');
+                    console.error(error);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function parseAndLoadXML(xmlText) {
+            // Удаляем XML декларацию если есть
+            xmlText = xmlText.replace(/<\?xml.*?\?>/g, '');
+            
+            // Очищаем текущие блоки
+            promptBlocks = [];
+            
+            // Простой парсер для тегов
+            const tagRegex = /<(\w+)>([\s\S]*?)<\/\1>/g;
+            let match;
+            
+            while ((match = tagRegex.exec(xmlText)) !== null) {
+                const tagName = match[1];
+                const content = match[2].trim();
+                
+                // Пропускаем обёртку prompt если есть
+                if (tagName === 'prompt') continue;
+                
+                // Добавляем блок
+                promptBlocks.push({
+                    id: Date.now() + Math.random(),
+                    tag: tagName,
+                    content: content,
+                    lang: currentLang
+                });
+            }
+            
+            // Обновляем интерфейс
+            renderPromptBlocks();
+            updateOutput();
+            saveToLocalStorage();
+        }
+
+        function resetToDefaults() {
+            const t = translations[currentLang];
+            const confirmMessage = t.ui.confirmReset || 'Are you sure you want to reset everything to default settings?';
+            
+            if (!confirm(confirmMessage)) {
+                return;
+            }
+            
+            // Очищаем всё
+            promptBlocks = [];
+            customTags = [];
+            
+            // Сбрасываем язык на английский
+            currentLang = 'en';
+            // document.getElementById('langSelect').value = 'en'; // Language selector removed
+            
+            // Сбрасываем профессию на universal
+            document.getElementById('professionSelect').value = 'universal';
+            
+            // Очищаем localStorage
+            localStorage.removeItem('promptBuilderData');
+            localStorage.removeItem('promptBuilderLang');
+            
+            // Обновляем интерфейс
+            translateUI();
+            loadTags('universal');
+            renderPromptBlocks();
+            updateOutput();
+            
+            showNotification(t.ui.resetSuccess || 'Reset to defaults completed!', 'success');
+        }
+    </script>
+</body>
+</html>
