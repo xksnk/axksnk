@@ -1,151 +1,139 @@
 # Prompt Builder - Development & Deployment Tools
 
-Этот набор инструментов позволяет легко разрабатывать и деплоить `prompt-builder.html` на GitHub.
+This set of tools allows you to easily develop and deploy `prompt-builder.html` to GitHub.
 
-## 📁 Файлы
+## 📁 Files
 
-- `prompt-builder.html` - основной файл конструктора промптов
-- `file-sync.sh` - скрипт для автоматической синхронизации файлов
-- `deploy.sh` - скрипт для деплоя на GitHub
-- `deploy-button.html` - веб-интерфейс для быстрого деплоя
-- `server.py` - HTTP сервер для веб-интерфейса
-- `start.sh` - скрипт для запуска всей среды разработки
+- `prompt-builder.html` - main prompt builder file (located in `../tools/`)
+- `file-sync.sh` - script for automatic file synchronization
+- `deploy.sh` - script for deployment to GitHub
+- `server.py` - HTTP server for web interface
+- `start.sh` - script to start the entire development environment
 
-## 🚀 Быстрый старт
+## 🚀 Quick Start
 
-### Вариант 1: Автоматический запуск (рекомендуется)
+### Option 1: Automatic startup (recommended)
 
 ```bash
-cd /Users/aleksandrkosenko/xksnk_site_github/axksnk/Tools
+cd /Users/aleksandrkosenko/xksnk_site_github/axksnk/deploy_sh
 chmod +x start.sh
 ./start.sh
 ```
 
-Это автоматически:
-- Запустит HTTP сервер
-- Откроет браузер с кнопкой деплоя
-- Сделает все скрипты исполняемыми
+This automatically:
+- Starts the HTTP server
+- Makes all scripts executable
 
-### Вариант 2: Ручной запуск
+### Option 2: Manual startup
 
 ```bash
-cd /Users/aleksandrkosenko/xksnk_site_github/axksnk/Tools
+cd /Users/aleksandrkosenko/xksnk_site_github/axksnk/deploy_sh
 
-# Сделать скрипты исполняемыми
+# Make scripts executable
 chmod +x *.sh
 chmod +x server.py
 
-# Запустить сервер
+# Start the server
 python3 server.py
 ```
 
-Затем открыть в браузере: `http://localhost:8000/deploy-button.html`
+## 🔧 Usage
 
-## 🔧 Использование
+### 1. Command Line Interface
 
-### 1. Веб-интерфейс деплоя
-
-Откройте `http://localhost:8000/deploy-button.html` для доступа к кнопке деплоя.
-
-**Кнопки:**
-- 🚀 **Deploy to GitHub** - полный деплой (синхронизация + git commit + push)
-- 📁 **Sync File Only** - только синхронизация файла без git операций
-
-### 2. Командная строка
-
-#### Синхронизация файлов
+#### File Synchronization
 
 ```bash
-# Одноразовая синхронизация
+# One-time synchronization
 ./file-sync.sh sync
 
-# Мониторинг изменений (автоматическая синхронизация)
+# Monitor for changes (automatic synchronization)
 ./file-sync.sh monitor
 
-# Создание резервной копии
+# Create backup
 ./file-sync.sh backup
 ```
 
-#### Деплой на GitHub
+#### GitHub Deployment
 
 ```bash
-# Полный деплой
+# Full deployment
 ./deploy.sh deploy
 
-# Только синхронизация файла
+# File synchronization only
 ./deploy.sh sync
 
-# Проверка статуса
+# Check status
 ./deploy.sh status
 ```
 
-## 📂 Структура путей
+## 📂 Path Structure
 
-- **Источник:** `/Users/aleksandrkosenko/xksnk_site_github/axksnk/Tools/prompt-builder.html`
-- **Цель:** `/Users/aleksandrkosenko/xksnk_site_github/xksnk/tools/prompt-builder.html`
-- **Резервные копии:** `/Users/aleksandrkosenko/xksnk_site_github/axksnk/Tools/backups/`
+- **Source:** `/Users/aleksandrkosenko/xksnk_site_github/axksnk/tools/prompt-builder.html`
+- **Target:** `/Users/aleksandrkosenko/xksnk_site_github/xksnk/tools/prompt-builder.html`
+- **Backups:** `/Users/aleksandrkosenko/xksnk_site_github/axksnk/deploy_sh/backups/`
 
-## 🔄 Рабочий процесс
+## 🔄 Workflow
 
-1. **Разработка:** Редактируйте `prompt-builder.html` в папке `axksnk/Tools/`
-2. **Тестирование:** Откройте `http://localhost:8000/prompt-builder.html` для тестирования
-3. **Деплой:** Нажмите кнопку "Deploy to GitHub" в веб-интерфейсе
-4. **Автоматизация:** Скрипт автоматически:
-   - Скопирует файл в целевую папку
-   - Создаст git commit
-   - Отправит изменения на GitHub
+1. **Development:** Edit `prompt-builder.html` in the `axksnk/tools/` folder
+2. **Testing:** Open `http://localhost:8000/prompt-builder.html` for testing
+3. **Deployment:** Run `./deploy.sh deploy` for full deployment
+4. **Automation:** The script automatically:
+   - Copies the file to the target folder
+   - Creates a git commit
+   - Pushes changes to GitHub
 
-## 🛠 Мониторинг изменений
+## 🛠 Change Monitoring
 
-Для автоматической синхронизации при каждом изменении файла:
+For automatic synchronization on every file change:
 
 ```bash
 ./file-sync.sh monitor
 ```
 
-Этот режим будет отслеживать изменения и автоматически копировать файл при каждом сохранении.
+This mode will track changes and automatically copy the file on each save.
 
-## 📋 Требования
+## 📋 Requirements
 
 - Python 3.x
-- Git (для деплоя)
-- Bash (для скриптов)
+- Git (for deployment)
+- Bash (for scripts)
 
-## 🔧 Устранение неполадок
+## 🔧 Troubleshooting
 
-### Проблема: "Permission denied"
+### Problem: "Permission denied"
 ```bash
 chmod +x *.sh
 chmod +x server.py
 ```
 
-### Проблема: "Python not found"
-Установите Python 3:
+### Problem: "Python not found"
+Install Python 3:
 ```bash
-# macOS (с Homebrew)
+# macOS (with Homebrew)
 brew install python3
 
 # Ubuntu/Debian
 sudo apt-get install python3
 ```
 
-### Проблема: "Git repository not found"
-Убедитесь, что папка `/Users/aleksandrkosenko/xksnk_site_github/xksnk/` является git репозиторием.
+### Problem: "Git repository not found"
+Make sure the folder `/Users/aleksandrkosenko/xksnk_site_github/xksnk/` is a git repository.
 
-### Проблема: "Port 8000 already in use"
-Измените порт в `server.py` или остановите процесс, использующий порт 8000.
+### Problem: "Port 8000 already in use"
+Change the port in `server.py` or stop the process using port 8000.
 
-## 💡 Советы
+## 💡 Tips
 
-1. **Быстрый деплой:** Используйте веб-интерфейс для быстрого деплоя
-2. **Автоматизация:** Запустите мониторинг для автоматической синхронизации
-3. **Резервные копии:** Скрипты автоматически создают резервные копии перед изменениями
-4. **Безопасность:** Все операции выполняются с проверкой ошибок и логированием
+1. **Quick deployment:** Use `./deploy.sh deploy` for quick deployment
+2. **Automation:** Start monitoring for automatic synchronization
+3. **Backups:** Scripts automatically create backups before changes
+4. **Safety:** All operations are performed with error checking and logging
 
-## 📞 Поддержка
+## 📞 Support
 
-При возникновении проблем проверьте:
-1. Права доступа к файлам
-2. Наличие всех зависимостей
-3. Корректность путей в скриптах
-4. Логи в консоли браузера (F12) 
+If you encounter problems, check:
+1. File permissions
+2. All dependencies are installed
+3. Correct paths in scripts
+4. Console logs for errors 
